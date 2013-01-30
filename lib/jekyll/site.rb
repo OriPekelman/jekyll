@@ -133,8 +133,8 @@ module Jekyll
     # Returns nothing.
     def read_directories(dir = '')
       base = File.join(self.source, dir)
-      entries = Dir.chdir(base) { filter_entries(Dir.entries('.')) }
-
+      entries = Dir.chdir(base) { filter_entries(Dir['*']) + Dir['.htaccess'] }
+      
       self.read_posts(dir)
 
       entries.each do |f|
@@ -326,8 +326,7 @@ module Jekyll
 
     # Filter out any files/directories that are hidden or backup files (start
     # with "." or "#" or end with "~"), or contain site content (start with "_"),
-    # or are excluded in the site configuration, unless they are web server
-    # files such as '.htaccess'.
+    # or are excluded in the site configuration.
     #
     # entries - The Array of String file/directory entries to filter.
     #
